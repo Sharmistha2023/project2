@@ -7,18 +7,11 @@ import joblib
 
 
 df = pd.read_csv('/mnt/ou/Algerian_forest_fires_dataset_CLEANED_NEW.csv')
-# df.columns
-# df.drop(['day','month','year'], axis=1, inplace=True)
-df['Classes']= np.where(df['Classes']== 'not fire',0,1)
 X = df.drop('FWI',axis=1)
 y= df['FWI']
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.25,random_state=0)
 X_train.shape, X_test.shape
 X_train.corr()
-# drop features which has correlation more than 0.75
-# corr_features = correlation(X_train, 0.75)
-# X_train.drop(corr_features,axis=1, inplace=True)
-# X_test.drop(corr_features,axis=1, inplace=True)
 X_train.shape, X_test.shape
 #model creation
 lreg = LinearRegression()
@@ -41,7 +34,6 @@ test_data = pd.DataFrame([{
 
 pred = lreg.predict(test_data)
 print(f"prediction: {pred}")
-
 mae = mean_absolute_error(y_test, lreg_pred)
 r2 = r2_score(y_test, lreg_pred)
 joblib.dump(lreg, "/mnt/model/model.joblib")
