@@ -4,9 +4,9 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score
 import numpy as np
 import joblib
+import mlflow
 
-
-df = pd.read_csv('/mnt/ou/Algerian_forest_fires_dataset_CLEANED_NEW.csv')
+df = pd.read_csv('/mnt/ou/Fire_dataset_cleaned.csv')
 X = df.drop('FWI',axis=1)
 y= df['FWI']
 X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.25,random_state=0)
@@ -36,4 +36,5 @@ pred = lreg.predict(test_data)
 print(f"prediction: {pred}")
 mae = mean_absolute_error(y_test, lreg_pred)
 r2 = r2_score(y_test, lreg_pred)
+mlflow.log_params({"mae":mae,"r2":r2})
 joblib.dump(lreg, "/mnt/model/model.joblib")
